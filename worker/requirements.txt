@@ -1,0 +1,4 @@
+aiohttp==3.*,>=3.7.4
+aiokafka==0.*,>=0.7.0
+asyncclick==7.*,>=7.1.2
+loguru==0.*,>=0.5.3

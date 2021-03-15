@@ -1,0 +1,31 @@
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: "ozon_category:1:1,ozon_products:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+  worker:
+    build:
+       context: .
+       dockerfile: ./worker/Dockerfile
+    command: python worker.py --category=smartfony-15502 --pages=5
+    depends_on:
+      - kafka
+  parser:
+    build:
+       context: .
+       dockerfile: ./parser/Dockerfile
+    command: python parser.py
+    depends_on:
+      - kafka
+

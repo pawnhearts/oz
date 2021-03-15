@@ -68,7 +68,7 @@ class Catalog:
     def get_items(data: Dict) -> Optional[List]:
         try:
             return next(iter(data['catalog']['searchResultsV2'].values()))['items']
-        except (KeyError, StopIteration):
+        except (KeyError, StopIteration, TypeError):
             return None
 
     @staticmethod

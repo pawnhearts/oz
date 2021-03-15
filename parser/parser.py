@@ -33,7 +33,7 @@ async def main() -> None:
             )
             catalog_page = json.loads(msg.value.decode('utf-8'))
             if catalog_page['status'] != 200:
-                logger.warning(f'Non-200 status at {catalog_page["url"]}')
+                logger.warning(f'Non-200 status code on {catalog_page["url"]}')
             else:
                 items = Catalog.get_items(catalog_page['data'])
                 if items is None:
@@ -46,7 +46,6 @@ async def main() -> None:
                         await producer.send_and_wait('ozon_products', product)
 
     finally:
-        producer.send('ozon-products', product)
         await consumer.stop()
         await producer.stop()
 
